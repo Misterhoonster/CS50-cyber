@@ -1,157 +1,159 @@
-# Problem Set: Analyzing HTTP(S) Traffic and Breaking Encrypted Passwords
-
-## Overview
-
-This problem set combines network analysis and cryptographic concepts. Students will:
-1. Capture and analyze HTTP traffic to retrieve a secret key.
-2. Use the key to decrypt an encrypted `passwords.db` file.
-3. Reverse engineer hashed passwords using a list of common passwords.
+Here is the updated `README.md` content with the steps outlined:
 
 ---
 
-## Part 1: Capture the Secret Key
+# **Password Cracking Pset (Beta Version)**
 
-### Objective
-Capture a secret key sent over HTTP using `tcpdump`.
+This beta version hosts a simple Flask web server locally on `localhost:8080`. For the final problem set, we will deploy the server and use the deployed URL instead. The server code is located in the `server` folder, while the student code resides in the `client` folder.
 
-### Instructions
-1. Write a Python script to send an HTTP request and retrieve the secret key.
-2. Use `tcpdump` to capture HTTP traffic.
+## **Context**
+You are at Capital One Cafe with David Malan and spot him in the corner on his laptop. As the conniving CS50 student you are, you decide to inspect network traffic to snoop on Malan's activity. You already have a suspicious passwords.db file at your disposal connected to Malan's account, but unfortunately, it's encrypted. Stupidly enough, you find that Malan sends an unencrypted HTTP request over the network, and you spot his secret key. You use this key to break the encryption, but bummer, the password is still hashed. Luckily, you have in your arsenal a list of the 25k most common passwords—could Malan be using one of these? You check by hashing each plaintext password against your hashed copy and find that bingo—it is one of them!
 
-### Boilerplate Code
-```python
-import requests
+This section of the problem set will give students hands-on experience with:
 
-# Fetch secret key from a simulated server
-response = requests.get("http://httpbin.org/anything")
-print("Secret Key:", response.text)
-```
-
-### Simulated Response
-The server responds with a JSON payload containing a secret key, e.g., `{ "secret": "mySecretKey123" }`.
-
-### Capture Command
-```bash
-sudo tcpdump -A port 80
-```
+- The dangers of unencrypted HTTP communication.
+- Brute-force techniques for common password cracking (and the importance of avoiding weak passwords).
+- The SHA-256 hashing algorithm, commonly used for secure applications.
 
 ---
 
-## Part 2: Decrypt the Encrypted Database
+## **Steps**
 
-### Objective
-Use the captured secret key to decrypt the `passwords.db` file, which contains usernames and hashed passwords.
+### **Part 1: Capture the Secret Key**
+In this task, you will simulate snooping on a public network to capture a secret key sent over an insecure HTTP request.
 
-### Provided File
-- `passwords.db` (encrypted file in the same directory)
+1. **Run the Flask Web Server**:
+   - Navigate to the `server` folder and run:
+     ```bash
+     python app.py
+     ```
 
-### Boilerplate Code
-```python
-from cryptography.fernet import Fernet
+2. **Run `tcpdump` to Capture Traffic**:
+   - Open a terminal and execute:
+     ```bash
+     sudo tcpdump -i any port 8080 -A
+     ```
 
-# Replace with the captured key
-secret_key = b'mySecretKey123'
-cipher = Fernet(secret_key)
+3. **Send the HTTP Request**:
+   - Use the following code in `traffic.py` to simulate David Malan (as the web server admin) sending a request for a secret key:
+     ```python
+     import requests
 
-# Decrypt the file
-with open("passwords.db", "rb") as encrypted_file:
-    encrypted_data = encrypted_file.read()
+     # Send secret key over network
+     url = "http://localhost:8080/fetch"
+     payload = {"name": "INSERT NAME HERE"}
 
-decrypted_data = cipher.decrypt(encrypted_data)
-
-# Save the decrypted data
-with open("decrypted_passwords.txt", "wb") as decrypted_file:
-    decrypted_file.write(decrypted_data)
-
-print("Decryption complete! Decrypted data saved in decrypted_passwords.txt.")
-```
-
-### Decrypted File Format (Example)
-```
-username1:5f4dcc3b5aa765d61d8327deb882cf99
-username2:098f6bcd4621d373cade4e832627b4f6
-```
-
----
-
-## Part 3: Reverse Engineer Hashed Passwords
-
-### Objective
-Write a function to match hashed passwords against a list of common passwords.
-
-### Provided Files
-- `decrypted_passwords.txt` (from Part 2)
-- `common_passwords.txt` (list of common passwords)
-
-### Hashing Algorithm
-MD5
-
-### Boilerplate Code
-```python
-import hashlib
-
-def crack_passwords(hash_file, password_list_file):
-    # Load the hashes
-    with open(hash_file, "r") as f:
-        hashed_passwords = [line.strip().split(":") for line in f]
-
-    # Load the list of common passwords
-    with open(password_list_file, "r") as f:
-        common_passwords = [line.strip() for line in f]
-
-    cracked_passwords = {}
-
-    # Attempt to crack each hash
-    for username, hashed in hashed_passwords:
-        for password in common_passwords:
-            hashed_attempt = hashlib.md5(password.encode()).hexdigest()
-            if hashed_attempt == hashed:
-                cracked_passwords[username] = password
-                break
-
-    return cracked_passwords
-
-# Example usage
-cracked = crack_passwords("decrypted_passwords.txt", "common_passwords.txt")
-print("Cracked Passwords:")
-for user, password in cracked.items():
-    print(f"{user}: {password}")
-```
+     requests.get(url, params=payload)
+     ```
+   - Run the script:
+     ```bash
+     python traffic.py
+     ```
+   - Observe the terminal output from `tcpdump` to find the secret key sent over the network.
 
 ---
 
-## Final Deliverables
+### **Part 2: Decrypt the Encrypted Database**
+Using the captured secret key, decrypt the `passwords.db` file to extract the plaintext username and hashed password.
 
-1. `traffic.py`: Script to capture and extract the secret key.
-2. `decrypt_db.py`: Script to decrypt the `passwords.db` file.
-3. `crack_passwords.py`: Script to reverse engineer hashed passwords.
+1. **Fetch `passwords.db`**:
+   - Navigate to the web server (e.g., `http://localhost:8080/fetch`) and enter your name to download your custom `passwords.db` file. 
+   - Move the downloaded file into the `client` folder.
+
+2. **Run `decrypt.py`**:
+   - The following code decrypts the file using the captured secret key:
+     ```python
+     from Crypto.Cipher import AES
+     from Crypto.Util.Padding import unpad
+
+     def decrypt_passwords(file_path, key):
+         key = bytes.fromhex(key)
+
+         try:
+             with open(file_path, "rb") as encrypted_file:
+                 iv = encrypted_file.read(16)
+                 encrypted_data = encrypted_file.read()
+
+             cipher = AES.new(key, AES.MODE_CBC, iv)
+             decrypted_data = unpad(cipher.decrypt(encrypted_data), AES.block_size)
+
+             return decrypted_data.decode()
+         except Exception as e:
+             print("Error decrypting the file:", e)
+             return None
+
+     if __name__ == "__main__":
+         secret_key = input("Enter the secret key you found from tcpdump: ").strip()
+         file_path = "passwords.db"
+
+         decrypted_data = decrypt_passwords(file_path, secret_key)
+         if decrypted_data:
+             print("\nDecrypted Passwords:")
+             print(decrypted_data)
+         else:
+             print("Failed to decrypt the passwords file.")
+     ```
+   - Run the script:
+     ```bash
+     python decrypt.py
+     ```
+
+3. **Output**:
+   - The script will output the username and hashed password in the format: 
+     ```
+     username: hashed_password
+     ```
 
 ---
 
-## Bonus Challenge
+### **Part 3: Reverse Engineer Hashed Passwords**
+Using the `passwords.txt` file (RockYou Top 25k list), brute-force the hashed password to find the plaintext password.
 
-- Enhance the password cracking function to handle SHA-256 hashes and compare runtimes.
+1. **Write `cracker.py`**:
+   - The following script hashes each password in `passwords.txt` and compares it to the hashed password:
+     ```python
+     import hashlib
+     import sys
+
+     def crack_password(hashed_password, password_file):
+         with open(password_file, "r") as file:
+             passwords = file.read().splitlines()
+
+         for password in passwords:
+             current_hash = hashlib.sha256(password.encode()).hexdigest()
+             if current_hash == hashed_password:
+                 print(f"Match found! Password: {password}")
+                 return password
+
+         print("No match found.")
+         return None
+
+     if __name__ == "__main__":
+         if len(sys.argv) != 3:
+             print("Usage: python cracker.py <hashed_password> <password_file>")
+             sys.exit(1)
+
+         hashed_password = sys.argv[1]
+         password_file = sys.argv[2]
+
+         crack_password(hashed_password, password_file)
+     ```
+
+2. **Run the Script**:
+   - Run the script with the hashed password and the path to `passwords.txt`:
+     ```bash
+     python cracker.py <hashed_password> passwords.txt
+     ```
+
+3. **Output**:
+   - The script will output the plaintext password if a match is found.
 
 ---
 
-## Walkthrough
+## **Future Improvements**
+- Add an endpoint to the web server to verify the student's name and password combination.
+- Deploy the web server to a live URL for ease of use.
 
-### Step-by-step Guide
-1. **Capture the key**:
-   - Run `tcpdump` to extract the secret key from HTTP traffic.
-   - Use the key in the decryption script.
-   
-2. **Decrypt the database**:
-   - Use the secret key to decrypt `passwords.db`.
-   - Verify that the decrypted file contains usernames and hashed passwords.
+--- 
 
-3. **Reverse engineer passwords**:
-   - Write a function to compare MD5 hashes with common passwords.
-   - Test the function and document cracked passwords.
-
----
-
-## Runtime Complexity
-
-- **Decryption**: \( O(n) \), where \( n \) is the size of the database file.
-- **Password Cracking**: \( O(m \cdot p) \), where \( m \) is the number of hashes and \( p \) is the number of common passwords.
+This completes the setup and steps for this beta version.
