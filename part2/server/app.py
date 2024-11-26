@@ -15,6 +15,53 @@ def hash_name(name):
     hashed = hashlib.sha256(name.encode()).digest()
     return hashed[:AES_BLOCK_SIZE]
 
+
+def ctr(text):    
+    counter = 0
+    cipher_text = ""
+    for char in text:
+        if char != " ":
+            key = (counter % 26) + 1  
+            random_number = (ord(char) + key) % 26 
+            cipher_char = chr(random_number + 64)
+            cipher_text += cipher_char
+            counter += 1 
+        else:
+            cipher_text += char  
+    
+    return cipher_text
+
+def ecb(text): 
+    ecb_map = {}   
+    cipher_text = ""
+    for char in text:
+        if char != " ":
+            if char in ecb_map:
+                cipher_text += ecb_map[char]
+            else:
+                random_number = random.randint(1, 26)
+                while chr(random_number + 64) in ecb_map:
+                    random_number = random.randint(1, 26)
+                ecb_map[char] = chr(random_number + 64)
+                cipher_text += ecb_map[char]
+        else:
+            cipher_text += char
+    
+    return cipher_text
+
+
+def check_id_exists(student_id):
+    """Check if the given student ID already exists in mapping.txt."""
+    try:
+        with open("mapping.txt", "r") as file:
+            for line in file:
+                if line.startswith(student_id + " - "):
+                    return True
+    except FileNotFoundError:
+        # If mapping.txt does not exist, assume the ID does not exist
+        return False
+    return False
+
 @app.route('/')
 def home():
     """Homepage with a form to download the encrypted passwords file."""
@@ -75,6 +122,75 @@ def fetch_key():
     # Return the hashed key
     secret_key = hash_name(name)
     return jsonify({"secret_key": secret_key.hex()})
+
+
+
+@app.route('/get_text', methods=['GET'])
+def get_text():
+    """Return a randomly selected text from texts.txt."""
+    
+    student_id = request.args.get('id')
+    
+    # Validate input: Ensure student_id is provided and is numeric
+    if not student_id or not student_id.isdigit():
+        return jsonify({"error": "Invalid ID. Please provide a numeric Harvard ID."}), 400
+    
+
+    # Return already selected text for existing ID
+    with open("mapping.txt", "r") as file:
+        for line in file:
+            if line.strip() == "":
+                break
+            id_in_map, text_in_map = line.strip().split(' - ')
+            if id_in_map == student_id:
+                 # Return the existing text for this ID
+                return jsonify({"text": text_in_map.strip().split('|')[1]})
+
+    try:
+        # Load texts from texts.txt file
+        with open("texts.txt", "r") as excerpts:
+            texts = excerpts.read().splitlines()
+        
+        # Randomly select one text line and encrypt it
+        selected_text = random.choice(texts)
+        encrypted_text = ecb(selected_text)
+        
+        with open("mapping.txt", "a") as mapping:
+            # Store mapping (id - text) in mapping.txt
+            mapping.write(f"{student_id} - {selected_text}|{encrypted_text}\n")
+        
+        # Return the selected text as JSON response
+        return jsonify({"selected_text": encrypted_text})
+    
+    except FileNotFoundError:
+        return jsonify({"error": "Please try again!"}), 500
+
+
+@app.route('/check', methods=['GET'])
+def check():
+    """
+    Check if the provided ID and text match the mapping in mapping.txt.
+    """
+    student_id = request.args.get('id')
+    submitted_text = request.args.get('text')
+
+    # Validate input
+    if not student_id or not submitted_text:
+        return jsonify({"error": "ID and text are required."}), 400
+    
+    try:
+        with open('mapping.txt', 'r') as file:
+            for line in file:
+                if line.strip() == "":
+                    break
+                id_in_map, text_in_map = line.strip().split(' - ')
+                if id_in_map == student_id and text_in_map.strip().split("|")[0] == submitted_text:
+                    return jsonify({"message": "Correct!"})
+        return jsonify({"message": "Try Again!"})
+    except Exception as e:
+        print(f"Error while reading the mapping")
+        return False
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
