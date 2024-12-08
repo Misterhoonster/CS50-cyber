@@ -67,7 +67,7 @@ def generate_counter(nonce, block_number):
     """
     return (nonce << 64) | block_number
 
-def proper_block_cipher(counter, key):
+def block_cipher(counter, key):
     # Ensure counter is 16 bytes (128 bits) for AES block size
     counter_bytes = counter.to_bytes(16, byteorder='big')
     
@@ -100,7 +100,7 @@ def ctr(image_matrix):
         for j in range(width):
             block_number = i * width + j
             counter = generate_counter(nonce, block_number)
-            keystream = proper_block_cipher(counter, key)
+            keystream = block_cipher(counter, key)
             encrypted_image[i][j] = image_matrix[i][j] ^ keystream
     
     return encrypted_image
