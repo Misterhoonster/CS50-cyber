@@ -1,12 +1,11 @@
 import hashlib
 import sys
 
+# TODO: Crack Malan's password using passwords.txt
 def crack_password(hashed_password, password_file):
-    # TODO: read passwords from the file
     with open(password_file, "r") as file:
         passwords = file.read().splitlines()
 
-    # TODO: attempt to match the hash
     for password in passwords:
         # Hash the current password
         current_hash = hashlib.sha256(password.encode()).hexdigest()

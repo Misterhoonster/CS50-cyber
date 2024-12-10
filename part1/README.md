@@ -1,38 +1,41 @@
+# Part 1 of the problem set (ECB and CTR encryption)
 
-Here is the updated `README.md` content with the steps outlined:
+## Setup
+Before diving in, make sure to put your student ID in the `.env` file. This ID is used to generate unique ciphertext for Part 1 and unique passwords for Malan in Part 2. Don't skip this step unless you enjoy unnecessary confusion later!
 
 ---
 
-# Part 1 of the problem set (ECB and CTR encryption)
+## Subpart 1: Encrypt Your Own Image
+In this subpart, you'll implement **ECB** and **CTR** encryption modes in `encryption.py` and run them on your own uploaded image. This isn't just coding—it's a chance to play with pixels and patterns!
 
-## Subpart 1
-In this subpart, students will be asked to implement ECB and CTR encryption modes based on their knowledge learned during a lecture. On our part, we provide an empty python script file, where students will write their code. In order to make the problem more interesting, we would like to ask students to upload their own image and apply two types of encrytpion on it. Then, they should briefly describe the differences between ECB and CTR and their implications on security in the comment section of their code. 
+### Steps:
 
-## Subpart 2
-In the second subpart, students will carry out frequency distribution analysis. They only need to writte a code to plot a graph of frequency distribution, we will provide an ECB encrypted text. Here are the step-by-step explanation of this subpart:
+1. Implement the encryption methods in `encryption.py`.
+2. Upload your own image and apply both ECB and CTR encryption.
+3. After running the encryption, observe the results and note the differences between the encrypted images in `questions.txt`.
 
-1. **Launch the Flask server**:
-   ```
-   python app.py
-   ```
-2. **Request the ECB encrypted text**:
+**Hint:** ECB mode tends to create recognizable patterns in the encrypted image. Think of it as leaving a digital breadcrumb trail.
 
-   Students need to send their Harvard ID to the server, which would uniquely identify them.
-   ```
-   curl "http://localhost:8080/get_text?id=123"
-   ```
-   The server will return an ECB encrypted text to a student. They would get something like:
-   ```
-   {"selected_text":"B QQWBPS WXY WS BYN WWSS XWTSSVD WWVV BSNSQ NBUS FYYK BKNWPSV"}
-   ```
-3. **After performing the frequency disitrbution analysis and decrypting the text, students would check whether their answer is correct by sending the check request to the server**
-   ```
-   curl "http://localhost:8080/check?id=123&text=all%20happy%20families%20are%20alike%20each%20unhappy%20family%20is%20unhappy%20in%20its%20own%20way"
-   ```
-   Here `%20` represents a space, but later we would consider making sending the request much easier for the students.
+---
 
-   If their answer is correct, then the server will send the "Correct!" message; otherwise, "Try Again!" would be received.
+## Subpart 2: Decrypt the ECB-Encrypted Text
+Now, it's time to test your sleuthing skills. You'll decrypt an ECB-encrypted text using frequency analysis and crack the code like a true cipher detective!
 
-**Important point**:
-- We are thinking of having a launched server that will handle the backend stuff like storing the encrypted texts for each student's ID and checking the answer. Right now, we are using a smiple .txt file to store the mapping (Student ID - encrypted text); however, we are open to more complex solutions that would make the grading process easier for the CS50 stuff. 
-- Also, we are planning to have a pool of plaintexts, from which a randomly selected text would be given to a student. If there were only one text, it would be too trivial for students. So, we hope this would add some complexity to the task and makes it more engaging.
+### Steps:
+
+1. Run the `frequency_analysis.py` script to analyze the frequency distribution of letters in the encrypted text.
+   ```bash
+   python frequency_analysis.py
+   ```
+2. Design your own frequency analysis approach to crack the ciphertext.
+3. Once you've decrypted the text, answer the questions in `questions.txt`. 
+4. Verify your solution by placing the decrypted text in `sol.txt` and running:
+   ```bash
+   python check.pyc
+   ```
+
+**Pro Tip:** This isn't just about the math—it's about creativity. Use your knowledge of English letter frequencies (hint: 'E' is popular) and your inner Sherlock to crack the code.
+
+---
+
+Good luck! Remember, every encrypted image and cracked ciphertext brings you closer to mastering the art of cryptography.
