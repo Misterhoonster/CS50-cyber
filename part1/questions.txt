@@ -1,0 +1,6 @@
+1. After trying ECB and CTR encryption on an image, what differences do you observe between the resulting encryptions? 
+What do you think are the reason for them?
+
+2. Briefly explain how you managed to decrypt the ECB encrypted text using frequency analysis.
+
+3. Would we be able to run a similar frequency analysis on text encrypted with CTR? Why or why not?
