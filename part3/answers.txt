@@ -1,0 +1,21 @@
+Part 1: David's Naive Signing Mechanism
+
+(a) Why is using the same signature for every message problematic? What could an attacker possibly do with this repeated signature?
+
+Your answer here:
+
+(b) Suppose the attacker appends their own random number (of the same length) as the signature to the intercepted messages. When you receive two identical messages with different signatures, how would you identify which one belongs to David?
+
+Your answer here:
+
+Part 2: David’s Improved Mechanism
+
+(a) Which one of David’s assumptions about his new approach is wrong? Why?
+
+Your answer here:
+
+Part 3: Refining the Signature Mechanism
+
+(a) What should David modify in his signing mechanism to fully address the vulnerabilities from Part 2?
+
+Your answer here:

@@ -34,32 +34,6 @@ def list_to_image(pixel_list, output_path):
     img.putdata(flattened_pixels)
     img.save(output_path)
 
-def generate_counter(nonce, block_number):
-    """
-    Generates a simple counter value for CTR mode encryption.
-    
-    Parameters:
-        nonce (int): Initial nonce value.
-        block_number (int): Block number.
-    
-    Returns:
-        int: Counter value.
-    """
-    return (nonce << 64) | block_number
-
-def block_cipher(counter, key):
-    # Ensure counter is 16 bytes (128 bits) for AES block size
-    counter_bytes = counter.to_bytes(16, byteorder='big')
-    
-    # Create AES cipher in ECB mode since we're using it as a building block
-    cipher = AES.new(key, AES.MODE_ECB)
-    
-    # Encrypt the counter value
-    encrypted_counter = cipher.encrypt(counter_bytes)
-    
-    # Convert the result back to an integer for XOR operation with pixel
-    return int.from_bytes(encrypted_counter[:1], byteorder='big')
-
 def ecb(image_matrix):
     """
     Encrypts a grayscale image matrix using ECB mode.
@@ -74,10 +48,38 @@ def ecb(image_matrix):
     height, width = len(image_matrix), len(image_matrix[0])
     encrypted_image = [[0 for _ in range(width)] for _ in range(height)]
 
-    # TODO: Loop through each pixel
-    # TODO: Encrypt each pixel by XORing with the key
+    # TODO: Loop over every pixel XORing the pixel value with the key
+    for i in range(height):
+        for j in range(width):
+            encrypted_image[i][j] = image_matrix[i][j] ^ key
 
     return encrypted_image
+
+def generate_counter(nonce, block_number):
+    """
+    Generates a simple counter value for CTR mode encryption.
+    
+    Parameters:
+        nonce (int): Initial nonce value.
+        block_number (int): Block number.
+    
+    Returns:
+        int: Counter value.
+    """
+    return (nonce << 64) | block_number
+
+def encrypt_counter(counter, key):
+    # Ensure counter is 16 bytes (128 bits) for AES block size
+    counter_bytes = counter.to_bytes(16, byteorder='big')
+    
+    # Create AES cipher in ECB mode since we're using it as a building block
+    cipher = AES.new(key, AES.MODE_ECB)
+    
+    # Encrypt the counter value
+    encrypted_counter = cipher.encrypt(counter_bytes)
+    
+    # Convert the result back to an integer for XOR operation with pixel
+    return int.from_bytes(encrypted_counter[:1], byteorder='big')
 
 def ctr(image_matrix):
     """
@@ -95,17 +97,24 @@ def ctr(image_matrix):
     height, width = len(image_matrix), len(image_matrix[0])
     encrypted_image = [[0 for _ in range(width)] for _ in range(height)]
     
-    # TODO: Loop through each pixel
-    # TODO: Calculate the block_number as the current index of the pixel
-    # TODO: Generate a counter using the provided fn
-    # TODO: Generate the unique key using block_cipher
-    # TODO: Encrypt the image with the unique key
+    # TODO: Loop over each pixel, performing the following operations
+    # 1. Generate a block number based on (i,j)
+    # 2. Use the block number and the nonce to create a unique counter 
+    # 3. Encrypt the counter to get a keystream
+    # 4. XOR the pixel value with the keystream
+    for i in range(height):
+        for j in range(width):
+            block_number = i * width + j
+            counter = generate_counter(nonce, block_number)
+            keystream = encrypt_counter(counter, key)
+            encrypted_image[i][j] = image_matrix[i][j] ^ keystream
     
     return encrypted_image
 
-# Usage Example:
-lst = image_to_list('IMAGE PATH') # INSERT YOUR IMAGE FILEPATH HERE
+# TODO: Upload an image to the img/ folder
+# TODO: Write code to run ECB and CTR on your image using the provided functions
+lst = image_to_list('./img/shavkat.jpeg')
 ecb_lst = ecb(lst)
 ctr_lst = ctr(lst)
-list_to_image(ecb_lst, 'ECB_OUT_PATH')
-list_to_image(ctr_lst, 'CTR_OUT_PATH')
+list_to_image(ecb_lst, './img/shavkat_ecb.jpeg')
+list_to_image(ctr_lst, './img/shavkat_ctr.jpeg')

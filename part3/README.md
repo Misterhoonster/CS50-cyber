@@ -1,96 +1,67 @@
-Here is the updated `README.md` content with the steps outlined:
-
----
-
-# **Sending secure messages with asymmetric encryption (Beta Version)**
-
-This beta version hosts a simple Flask web server locally on `localhost:8080`. For the final problem set, we will deploy the server and use the deployed URL instead. The server code is located in the `server` folder, while the student code resides in the `client` folder.
+# **Part 3 of the problem set (Signing and Authentication)**
 
 ## **Context**
-David Malan has a sneaking suspicion that someone is spying him, and wants to send a message to Mr. Duck to alert him. However, he wants to avoid tipping off his spy. You've turned over a new leaf, and after seeing all that is wrong with the world, you decide to do some good – you will help them facilitate their message exchange privately, using the PGP encryption system.
+David Malan has a sneaking suspicion that someone is intercepting his messages and might be impersonating him. He is worried about a man-in-the-middle attack and wants to send a message to Mr. Duck to alert him securely. You've turned over a new leaf, and after seeing all that is wrong with the world, you decide to do some good—you will help them facilitate their message exchange privately using a secure signing and authentication mechanism.
 
 This section of the problem set will give students hands-on experience with:
 
-- the mechanics of encryption, signing, and key management.
-- how encryption integrates into systems.
+- How signatures ensure the integrity and authenticity of messages.
+- Exploring the shortcomings of signing mechanisms.
+- Understanding attacks on signed messages and how to mitigate them.
 
+In this phase, assume David is trying to communicate securely with his friend (you) while an attacker intercepts their communication. You will take on the role of David’s friend, analyzing and improving his signing mechanism.
 
-## **Background on Email Encryption**
-[Insert brief overview of email encryption]
-- Asymmetric encryption (public/private key pairs).
-- How PGP ensures confidentiality, integrity, and authenticity.
-- Common challenges in secure email communication.
+---
 
 ## **Steps**
 
-### **Part 1: Generate Key Pairs**
-In this task, you will generate your own PGP key pair using a Python library like `gnupg`.
+### **Part 1: David's Naive Signing Mechanism**
+David did well in his CS security course at the College. He decides to append a signature to his plaintext messages. Specifically, David encrypts his public key using his private key to create the signature. However, this naive approach has its flaws.
 
-```python
-import gnupg
-gpg = gnupg.GPG()
-input_data = gpg.gen_key_input(name_email="student@example.com", passphrase="securepass")
-key = gpg.gen_key(input_data)
-print("Key generated:", key)
-```
+1. **Scenario**:
+   - David uses the same signature for all his messages.
+   - The attacker can see the communication channel.
 
----
+2. **Analyze the Flaw**:
+   (a) Why is using the same signature for every message problematic? What could an attacker possibly do with this repeated signature?
 
-### **Part 2: Exchange Public Keys**
-Here, you will share your public keys `publickey.asc` with a partner, and import your partner's public key.
+   (b) Suppose the attacker appends their own random number (of the same length) as the signature to the intercepted messages. When you receive two identical messages with different signatures, how would you identify which one belongs to David?
 
-1. **Export public key:**
-```bash
-gpg --export --armor your_email@example.com > publickey.asc
-```
-
-2. **Import a partner’s public key:**
-```bash
-gpg --import partner_publickey.asc
-```
+3. **Write your answers in `answers.txt`.**
 
 ---
 
-### **Part 3: Encrypt and Sign an Email**
-1. **Encrypt**
+### **Part 2: David’s Improved Mechanism**
+After learning about the flaws in his first approach, you inform David of the potential vulnerabilities. David decides to act smarter this time. Instead of encrypting his public key, he chooses to encrypt the cleartext message itself with his private key and use it as the signature.
 
-- Here, you will digitally sign a plaintext email/message, and then encrypt it using your partner's public key. Afterwards, send it using either an email client/code.
-  ```python
-  encrypted_data = gpg.encrypt("This is a secret email.", recipients="partner@example.com")
-  with open("email.gpg", "wb") as f:
-      f.write(str(encrypted_data))
-  ```
+This means that:
+- Each message gets a unique signature.
+- An attacker cannot modify the content of a message without invalidating the signature.
 
-2. **Sign**
-- After encrypting your email, you can digitally sign it using the following code:
-  ```python
-  signed_data = gpg.sign("This is a signed email.", passphrase="securepass")
-  with open("signed_email.txt", "wb") as f:
-      f.write(str(signed_data))
-  ```
+David is confident that:
+- Message integrity is preserved.
+- Authenticity is ensured because only he has the private key.
 
+1. **Analyze David’s Claims**:
+   (a) Which one of David’s assumptions about his new approach is wrong? Why?
 
-### **Part 4: Decrypt and verify Email**
-
-1. **Decrypt**
-Once you've received an encrypted email, decrypt it using your private key, and verify the signature.
-
-```python
-with open("email.gpg", "rb") as f:
-    encrypted_message = f.read()
-decrypted_data = gpg.decrypt(encrypted_message, passphrase="securepass")
-print("Decrypted message:", decrypted_data)
-```
-
-2. **Verify**
-```python
-verified = gpg.verify(decrypted_data)
-print("Signature valid:", verified.valid)
-```
+2. **Write your analysis in `answers.txt`.**
 
 ---
 
-## **Future Improvements**
-- 
+### **Part 3: Refining the Signature Mechanism**
+Based on the analysis in Part 2, you identify where David’s new approach falls short. To address these issues and ensure that an attacker cannot perform malicious attacks, propose a refined signature mechanism.
 
---- 
+1. **Propose a Solution**:
+   - What should David modify in his signing mechanism to fully address the vulnerabilities from Part 2?
+
+2. **Write your solution in `answers.txt`.**
+
+---
+
+## **What You Will Submit**
+Ensure you complete the following:
+- Answer all questions in `answers.txt`.
+- Provide clear and concise explanations for each part of the problem.
+
+Good luck, and remember: security is about being one step ahead of the attackers!
