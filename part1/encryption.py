@@ -49,9 +49,6 @@ def ecb(image_matrix):
     encrypted_image = [[0 for _ in range(width)] for _ in range(height)]
 
     # TODO: Loop over every pixel XORing the pixel value with the key
-    for i in range(height):
-        for j in range(width):
-            encrypted_image[i][j] = image_matrix[i][j] ^ key
 
     return encrypted_image
 
@@ -102,19 +99,8 @@ def ctr(image_matrix):
     # 2. Use the block number and the nonce to create a unique counter 
     # 3. Encrypt the counter to get a keystream
     # 4. XOR the pixel value with the keystream
-    for i in range(height):
-        for j in range(width):
-            block_number = i * width + j
-            counter = generate_counter(nonce, block_number)
-            keystream = encrypt_counter(counter, key)
-            encrypted_image[i][j] = image_matrix[i][j] ^ keystream
     
     return encrypted_image
 
 # TODO: Upload an image to the img/ folder
 # TODO: Write code to run ECB and CTR on your image using the provided functions
-lst = image_to_list('./img/shavkat.jpeg')
-ecb_lst = ecb(lst)
-ctr_lst = ctr(lst)
-list_to_image(ecb_lst, './img/shavkat_ecb.jpeg')
-list_to_image(ctr_lst, './img/shavkat_ctr.jpeg')
