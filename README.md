@@ -15,24 +15,27 @@ git clone https://github.com/Misterhoonster/CS50-cyber.git
 cd CS50-cyber
 ```
 
-### 2. **Set Up the `.env` File**
-This file is essential for generating unique ciphertext for Part 1 and unique passwords for Malan in Part 2. Follow these steps carefully:
+### 2. **Install Required Packages**
+Install the necessary Python packages from the `requirements.txt` file:
+```bash
+pip install -r requirements.txt
+```
+
+### 3. **Set Up the `.env` File**
+Configure the `.env` file for generating unique ciphertext and passwords:
 
 #### a. **Create the `.env` File**  
 If it doesn’t already exist, create a file named `.env` in the root directory.
 
-#### b. **Copy Contents from `.env.sample`**  
-Copy everything from the provided `.env.sample` file into your `.env` file.
-
-#### c. **Update the `STUDENT_ID` Variable**  
-Replace the placeholder in the `.env` file with your Harvard ID:
+#### b. **Copy and Update Contents**  
+Copy the contents of the provided `.env.sample` file into the `.env` file, then replace the placeholder for `STUDENT_ID` with your Harvard ID:
 ```env
 STUDENT_ID=YourHarvardIDHere
 ```
 
-Save the file to ensure proper configuration.
+Save the file after making these changes.
 
-### 3. **Explore the Parts**
+### 4. **Explore the Parts**
 The problem set is divided into three parts: `part1`, `part2`, and `part3`. Each part has its own directory with detailed instructions in its respective README file.
 
 To start working on a specific part, navigate to its directory:
@@ -41,7 +44,7 @@ cd part1
 ```
 Replace `part1` with `part2` or `part3` as needed.
 
----
+--- 
 
 ## Problem Set Structure
 
