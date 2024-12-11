@@ -16,30 +16,23 @@ To get started, follow these steps:
    ```bash
    cd CS50-cyber
    ```
-Here’s the revised section for the README.md:
 
----
-
-## 2. **Create the `.env` File**
+2. **Create the `.env` File**
 
 Before diving in, make sure to set up your `.env` file correctly. This file is essential for generating unique ciphertext for Part 1 and unique passwords for Malan in Part 2. Follow these steps carefully to avoid unnecessary confusion later:
 
-1. **Create the `.env` File**:  
+### a. **Create the `.env` File**:  
    If it doesn’t already exist, create a new file named `.env` in the root directory of the project.
 
-2. **Copy Contents from `.env.sample`**:  
+### b. **Copy Contents from `.env.sample`**:  
    Open the provided `.env.sample` file, copy its contents, and paste them into your newly created `.env` file.
 
-3. **Update the `STUDENT_ID` Variable**:  
+### c. **Update the `STUDENT_ID` Variable**:  
    Replace the placeholder value for `STUDENT_ID` in the `.env` file with your own Harvard ID.
 
    ```env
    STUDENT_ID=YourHarvardIDHere
    ```
-
-Make sure to save the changes to your `.env` file before proceeding. This step ensures that the encryption and password generation processes are tailored to your unique ID.
-
----
 
 3. **Explore the Parts**:
    - The problem set is divided into three parts: `part1`, `part2`, and `part3`. 
