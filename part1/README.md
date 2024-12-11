@@ -1,8 +1,5 @@
 # Part 1 of the problem set (ECB and CTR encryption)
 
-## Setup
-Before diving in, make sure to put your student ID in the `.env` file. This ID is used to generate unique ciphertext for Part 1 and unique passwords for Malan in Part 2. Don't skip this step unless you enjoy unnecessary confusion later!
-
 ---
 
 # Background on ECB and CTR Encryption Modes
