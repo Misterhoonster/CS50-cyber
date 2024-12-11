@@ -94,11 +94,10 @@ def ctr(image_matrix):
     height, width = len(image_matrix), len(image_matrix[0])
     encrypted_image = [[0 for _ in range(width)] for _ in range(height)]
     
-    # TODO: Loop over each pixel, performing the following operations
-    # 1. Generate a block number based on (i,j)
-    # 2. Use the block number and the nonce to create a unique counter 
-    # 3. Encrypt the counter to get a keystream
-    # 4. XOR the pixel value with the keystream
+    # TODO: For each pixel, perform the following:
+    # 1. Create a unique counter using (i, j) and the nonce.
+    # 2. Encrypt the counter to generate a keystream.
+    # 3. XOR the pixel value with the keystream.
     
     return encrypted_image
 
