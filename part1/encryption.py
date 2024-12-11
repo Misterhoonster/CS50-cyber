@@ -113,8 +113,8 @@ def ctr(image_matrix):
 
 # TODO: Upload an image to the img/ folder
 # TODO: Write code to run ECB and CTR on your image using the provided functions
-lst = image_to_list('./img/shavkat.jpeg')
+lst = image_to_list('./img/hoon.jpeg')
 ecb_lst = ecb(lst)
 ctr_lst = ctr(lst)
-list_to_image(ecb_lst, './img/shavkat_ecb.jpeg')
-list_to_image(ctr_lst, './img/shavkat_ctr.jpeg')
+list_to_image(ecb_lst, './img/hoon_ecb.jpeg')
+list_to_image(ctr_lst, './img/hoon_ctr.jpeg')
