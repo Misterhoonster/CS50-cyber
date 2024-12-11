@@ -1,6 +1,6 @@
 # CS50 Cyber Problem Set
 
-Welcome to the CS50 Cyber Problem Set! Designed for Harvard University's CS50, taught by Professor David Malan, this problem set introduces students to fundamental cybersecurity concepts through engaging narratives, hands-on exercises, and thoughtful conceptual questions.
+Welcome to the CS50 Cyber Problem Set! Designed for Harvard University's CS50, taught by Professor David Malan, this problem set introduces students to fundamental cybersecurity concepts through hands-on exercises and conceptual questions.
 
 ---
 
@@ -33,14 +33,12 @@ To get started, follow these steps:
 
 ### 1. READMEs
 Each part of the problem set is supported by a detailed README:
-- **Parts 2 and 3** include captivating mini-stories where students roleplay as both an attacker and a friend of David Malan. This narrative approach ensures the material is both engaging and informative.
+- **Parts 2 and 3** include mini-stories where students roleplay as both an attacker and a friend of David Malan.
 - READMEs provide clear instructions, background context, and occasional hints to guide students through setup and completion of the exercises. 
 - These READMEs are inspired by the comprehensive problem set websites provided for CS263 assignments.
 
 ### 2. Backend Design
-This problem set uses a backend server implemented with Flask, hosted on Heroku, to enhance the learning experience:
-- **Dynamic Challenges**: The backend generates unique ciphertexts for Part 1 and key-password pairs for Part 2 based on the hash of each student’s ID.
-- **Security and Efficiency**: Hosting the backend externally ensures students cannot access the generation algorithms, preserving exercise integrity and reducing local setup requirements.
+This problem set uses a backend server implemented with Flask, hosted on Heroku, to enhance the learning experience. The backend generates unique ciphertexts for Part 1 and key-password pairs for Part 2.
 
 ### 3. Script Files
 To encourage active problem-solving:
