@@ -28,24 +28,16 @@ def get_text(base_url, student_id):
         print(f"Error fetching text: {e}")
         sys.exit(1)
 
-def plot_frequencies(base_url, student_id):
+def plot_frequencies(ciphertext):
     """
-    Fetches the ciphertext and plots the frequency of lowercase letters.
+    Analyzes and plots the frequency of lowercase letters in the ciphertext.
 
     Args:
-        base_url (str): The base URL of the API (e.g., 'http://localhost:5000').
-        student_id (str): The numeric Harvard ID of the student.
+        ciphertext (str): The encrypted text.
 
     Returns:
         None
     """
-    # Get the ciphertext
-    ciphertext = get_text(base_url, student_id)
-
-    # Write to ciphertext file
-    with open("./ciphertext.txt", "w") as f:
-        f.write(ciphertext)
-    
     # Filter for lowercase letters only
     lowercase_letters = [char for char in ciphertext if char.islower()]
     
@@ -70,8 +62,50 @@ def plot_frequencies(base_url, student_id):
     # Show the plot
     plt.show()
 
-# TODO: More sophisticated frequency analysis
-# TODO: Write a function to check a given mapping (decrypts ciphertext automatically using your guess)
+# TODO: Fill in freq analysis function
+def frequency_analysis(ciphertext):
+    """
+    Provides a starting point for students to implement frequency analysis.
+
+    Args:
+        ciphertext (str): The encrypted text.
+
+    Returns:
+        dict: A guessed mapping of encrypted characters to plaintext characters.
+    """
+    # HINT: Use English letter frequencies to guess mappings.
+    # Example: English letters "E", "T", "A", "O" are the most frequent in plaintext.
+    # Compare these to the most frequent characters in the ciphertext.
+
+    # TODO: Start by counting letter frequencies in ciphertext
+
+    # TODO: Sort by frequency
+
+    # TODO: Guess mappings based on frequency
+    guessed_mapping = {}
+    english_frequencies = "ETAOINSHRDLCUMWFGYPBVKJXQZ"  # Common letters in decreasing order
+    encrypted_characters = None # TODO
+
+    # TODO: Create a mapping by aligning frequent letters
+
+    # Print guessed mapping for debugging
+    print("Guessed Mapping (encrypted -> plaintext):", guessed_mapping)
+
+    return guessed_mapping
+
+# TODO: Fill in decrypt function
+def decrypt_with_mapping(ciphertext, mapping):
+    """
+    Decrypts the ciphertext using a given character mapping.
+
+    Args:
+        ciphertext (str): The encrypted text.
+        mapping (dict): A dictionary mapping encrypted characters to plaintext characters.
+
+    Returns:
+        str: The decrypted text.
+    """
+    # TODO: Replace each encrypted character with its mapped plaintext character
 
 if __name__ == "__main__":
     # Check for student_id argument
@@ -79,10 +113,9 @@ if __name__ == "__main__":
         print("Usage: python frequency_analysis.py")
         sys.exit(1)
     
-    # Get the student_id from command-line arguments
+    # Get the student_id from environment variables
     student_id = os.getenv("STUDENT_ID")
     
-    # Check if student_id is numeric
     if not student_id.isdigit():
         print("Error: student_id must be numeric.")
         sys.exit(1)
@@ -93,5 +126,22 @@ if __name__ == "__main__":
         print("Error: SERVER_URL not set in .env file.")
         sys.exit(1)
     
+    # Fetch the ciphertext
+    ciphertext = get_text(base_url, student_id)
+    
+    # Write to ciphertext file
+    with open("./ciphertext.txt", "w") as f:
+        f.write(ciphertext)
+    
     # Plot frequencies
-    plot_frequencies(base_url, student_id)
+    plot_frequencies(ciphertext)
+    
+    # Perform frequency analysis and decrypt
+    guessed_mapping = frequency_analysis(ciphertext)
+    decrypted_text = decrypt_with_mapping(ciphertext, guessed_mapping)
+    
+    # Print decrypted text (partial decryption with guessed mapping)
+    print("\nDecrypted Text (partial):")
+    print(decrypted_text[:500])  # Print the first 500 characters for review
+
+    # HINT: Improve the guessed mapping iteratively and try decrypting again!
