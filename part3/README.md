@@ -9,8 +9,6 @@ This section of the problem set will give students hands-on experience with:
 - Exploring the shortcomings of signing mechanisms.
 - Understanding attacks on signed messages and how to mitigate them.
 
-In this phase, assume David is trying to communicate securely with his friend (you) while an attacker intercepts their communication. You will take on the role of David’s friend, analyzing and improving his signing mechanism.
-
 ---
 
 ## **Steps**
