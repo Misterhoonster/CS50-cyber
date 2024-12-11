@@ -8,41 +8,38 @@ Welcome to the CS50 Cyber Problem Set! Designed for Harvard University's CS50, t
 
 To get started, follow these steps:
 
-1. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/Misterhoonster/CS50-cyber.git
-   ```
-   Navigate to the cloned directory:
-   ```bash
-   cd CS50-cyber
-   ```
+### 1. **Clone the Repository**
+Clone the repository and navigate to the project directory:
+```bash
+git clone https://github.com/Misterhoonster/CS50-cyber.git
+cd CS50-cyber
+```
 
-2. **Create the `.env` File**
+### 2. **Set Up the `.env` File**
+This file is essential for generating unique ciphertext for Part 1 and unique passwords for Malan in Part 2. Follow these steps carefully:
 
-Before diving in, make sure to set up your `.env` file correctly. This file is essential for generating unique ciphertext for Part 1 and unique passwords for Malan in Part 2. Follow these steps carefully to avoid unnecessary confusion later:
+#### a. **Create the `.env` File**  
+If it doesn’t already exist, create a file named `.env` in the root directory.
 
-### a. **Create the `.env` File**:  
-   If it doesn’t already exist, create a new file named `.env` in the root directory of the project.
+#### b. **Copy Contents from `.env.sample`**  
+Copy everything from the provided `.env.sample` file into your `.env` file.
 
-### b. **Copy Contents from `.env.sample`**:  
-   Open the provided `.env.sample` file, copy its contents, and paste them into your newly created `.env` file.
+#### c. **Update the `STUDENT_ID` Variable**  
+Replace the placeholder in the `.env` file with your Harvard ID:
+```env
+STUDENT_ID=YourHarvardIDHere
+```
 
-### c. **Update the `STUDENT_ID` Variable**:  
-   Replace the placeholder value for `STUDENT_ID` in the `.env` file with your own Harvard ID.
+Save the file to ensure proper configuration.
 
-   ```env
-   STUDENT_ID=YourHarvardIDHere
-   ```
+### 3. **Explore the Parts**
+The problem set is divided into three parts: `part1`, `part2`, and `part3`. Each part has its own directory with detailed instructions in its respective README file.
 
-3. **Explore the Parts**:
-   - The problem set is divided into three parts: `part1`, `part2`, and `part3`. 
-   - Each part has its own directory and README file with detailed instructions and background information.
-
-   To start working on a specific part:
-   ```bash
-   cd part1
-   ```
-   Replace `part1` with `part2` or `part3` as needed.
+To start working on a specific part, navigate to its directory:
+```bash
+cd part1
+```
+Replace `part1` with `part2` or `part3` as needed.
 
 ---
 
