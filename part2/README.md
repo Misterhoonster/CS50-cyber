@@ -35,8 +35,9 @@ Now comes the sneaky part. Malan, in all his wisdom, decides to send a secret ke
 
 2. While `tcpdump` is running, simulate Malan's unsafe HTTP request by executing:
    ```bash
-   python malan_request.pyc
+   python malan_request.py
    ```
+   in another terminal window.
 
 3. Observe the terminal output from `tcpdump`. Look closely—you’ll find the secret key hidden in the network traffic. 
 
