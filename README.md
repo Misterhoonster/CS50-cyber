@@ -31,24 +31,15 @@ To get started, follow these steps:
 
 ## Problem Set Structure
 
-### 1. READMEs
-Each part of the problem set is supported by a detailed README:
-- **Parts 2 and 3** include mini-stories where students roleplay as both an attacker and a friend of David Malan.
-- READMEs provide clear instructions, background context, and occasional hints to guide students through setup and completion of the exercises. 
-- These READMEs are inspired by the comprehensive problem set websites provided for CS263 assignments.
+### Part 1: ECB and CTR Encryption
+- **Subpart 1**: Implement ECB and CTR encryption methods in `encryption.py` and apply them to an uploaded image. Compare results and observe patterns created by ECB mode.
+- **Subpart 2**: Decrypt an ECB-encrypted text using frequency analysis, leveraging knowledge of English letter frequencies to crack the code.
 
-### 2. Backend Design
-This problem set uses a backend server implemented with Flask, hosted on Heroku, to enhance the learning experience. The backend generates unique ciphertexts for Part 1 and key-password pairs for Part 2.
+### Part 2: HTTP and Password Cracking
+- Simulate a network traffic sniffing scenario where sensitive data is transmitted via unencrypted HTTP. Extract a secret key and decrypt Malan's database to retrieve a hashed password. Finally, use brute-force techniques to crack the hashed password.
 
-### 3. Script Files
-To encourage active problem-solving:
-- Student-provided Python scripts include `TODO` sections for students to complete.
-- Sensitive files, such as `malan_request.py`, are provided in `.pyc` format to prevent reverse-engineering and maintain the integrity of exercises like the network sniffing challenge.
-
-### 4. Conceptual Questions
-In addition to coding tasks, the problem set includes conceptual questions to deepen understanding:
-- Each part includes reflective questions about the broader motivations and implications of cybersecurity concepts.
-- Example: Question 3 challenges students to devise creative ways to impersonate someone online, reinforcing the motivations behind authentication and signing protocols.
+### Part 3: Signing and Authentication
+- Explore the use of digital signatures to ensure message integrity and authenticity. Analyze flaws in naive signing mechanisms, refine them, and propose improved solutions to counteract potential vulnerabilities.
 
 ---
 
