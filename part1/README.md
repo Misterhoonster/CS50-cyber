@@ -5,6 +5,47 @@ Before diving in, make sure to put your student ID in the `.env` file. This ID i
 
 ---
 
+# Background on ECB and CTR Encryption Modes
+
+Encryption is a critical concept in cybersecurity, and understanding how data is protected is an essential skill. Two widely used encryption modes are **Electronic Codebook (ECB)** and **Counter (CTR)**. Here’s a brief overview to help you get started:
+
+### **Electronic Codebook (ECB)**
+ECB is the simplest encryption mode. Here’s how it works:
+- The input data (e.g., an image or text) is divided into fixed-size blocks.
+- Each block is encrypted independently using the same encryption key.
+
+**Advantages**:
+- Easy to implement.
+- Fast and efficient for small amounts of data.
+
+**Disadvantages**:
+- Identical blocks of plaintext produce identical blocks of ciphertext.
+
+Think of ECB like a simple substitution cipher for blocks: easy to understand but not always secure.
+
+### **Counter (CTR)**
+CTR takes a more sophisticated approach:
+- Instead of encrypting the data blocks directly, CTR generates a unique "keystream" using a combination of a counter and the encryption key.
+- Each data block is XORed with the corresponding part of the keystream to produce the ciphertext.
+
+**Advantages**:
+- Doesn’t reveal patterns in the data (e.g., the same plaintext blocks will produce different ciphertext blocks).
+- Supports parallel processing, making it faster for larger datasets.
+- Can also be used for decryption by reversing the XOR operation.
+
+**Disadvantages**:
+- Requires careful management of the counter value to avoid reusing keystreams, which could compromise security.
+
+Think of CTR as turning encryption into a math problem: it’s more secure and versatile than ECB but a bit more complex.
+
+### Why Are These Modes Important?
+- ECB shows why simple encryption isn't enough in many cases. It's easy to implement but often leaks information.
+- CTR demonstrates how encryption can be made more secure and flexible by introducing randomness and counter-based techniques.
+
+By working through this problem set, you’ll implement and analyze these modes, gaining hands-on experience in cryptography. Ready to get started? 🚀
+
+---
+
 ## Subpart 1: Encrypt Your Own Image
 In this subpart, you'll implement **ECB** and **CTR** encryption modes in `encryption.py` and run them on your own uploaded image. This isn't just coding—it's a chance to play with pixels and patterns!
 
