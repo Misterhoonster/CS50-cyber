@@ -1,7 +1,11 @@
 import hashlib
 import sys
 
-# TODO: Crack Malan's password using passwords.txt
+def hash(text):
+    return hashlib.sha256(text.encode()).hexdigest()
+
+# TODO: Use a brute-force approach to crack Malan's password
+# TODO: Return either the cracked password or that the password was not found
 def crack_password(hashed_password, password_file):
     pass
 
@@ -16,4 +20,5 @@ if __name__ == "__main__":
     password_file = sys.argv[1]  # Path to passwords.txt
 
     # Start brute force attack
-    crack_password(hashed_password, password_file)
+    cracked_password = crack_password(hashed_password, password_file)
+    print(cracked_password)
