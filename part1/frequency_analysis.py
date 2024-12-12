@@ -77,18 +77,24 @@ def frequency_analysis(ciphertext):
     # Example: English letters "E", "T", "A", "O" are the most frequent in plaintext.
     # Compare these to the most frequent characters in the ciphertext.
 
-    # TODO: Start by counting letter frequencies in ciphertext
-
+    # TODO: Count letter frequencies in ciphertext
+    lowercase_letters = [char for char in ciphertext if char.islower()]
+    frequencies = Counter(lowercase_letters)
+    
     # TODO: Sort by frequency
-
+    sorted_items = sorted(frequencies.items(), key=lambda item: item[1], reverse=True)
+    
     # TODO: Guess mappings based on frequency
     guessed_mapping = {}
     english_frequencies = "ETAOINSHRDLCUMWFGYPBVKJXQZ"  # Common letters in decreasing order
-    encrypted_characters = None # TODO
+    encrypted_characters = [item[0] for item in sorted_items]  # Sorted ciphertext characters by frequency
 
     # TODO: Create a mapping by aligning frequent letters
+    for i, char in enumerate(encrypted_characters):
+        if i < len(english_frequencies):
+            guessed_mapping[char] = english_frequencies[i].lower()
 
-    # Print guessed mapping for debugging
+    # TODO: Print guessed mapping for debugging
     print("Guessed Mapping (encrypted -> plaintext):", guessed_mapping)
 
     return guessed_mapping
@@ -106,6 +112,8 @@ def decrypt_with_mapping(ciphertext, mapping):
         str: The decrypted text.
     """
     # TODO: Replace each encrypted character with its mapped plaintext character
+    decrypted_text = ''.join(mapping.get(char, char) for char in ciphertext)
+    return decrypted_text
 
 if __name__ == "__main__":
     # Check for student_id argument
@@ -134,7 +142,7 @@ if __name__ == "__main__":
         f.write(ciphertext)
     
     # Plot frequencies
-    plot_frequencies(ciphertext)
+    # plot_frequencies(ciphertext)
     
     # Perform frequency analysis and decrypt
     guessed_mapping = frequency_analysis(ciphertext)

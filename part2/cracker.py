@@ -1,9 +1,19 @@
 import hashlib
 import sys
 
+def hash(text):
+    return hashlib.sha256(text.encode()).hexdigest()
+
 # TODO: Crack Malan's password using passwords.txt
 def crack_password(hashed_password, password_file):
-    pass
+    passwords = []
+    with open(password_file, 'r') as f:
+        passwords = f.readlines()
+    
+    for password in passwords:
+        if hash(password.strip()) == hashed_password:
+            return "Cracked password: " + password.strip()
+    return "Password not found :("
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
@@ -16,4 +26,5 @@ if __name__ == "__main__":
     password_file = sys.argv[1]  # Path to passwords.txt
 
     # Start brute force attack
-    crack_password(hashed_password, password_file)
+    cracked_password = crack_password(hashed_password, password_file)
+    print(cracked_password)
