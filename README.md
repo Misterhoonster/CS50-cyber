@@ -1,3 +1,5 @@
+![CS50CYBER](https://github.com/user-attachments/assets/18e4c353-46c7-4bf0-860c-650278439c7a)
+
 # CS50 Cyber Problem Set
 
 Welcome to the CS50 Cyber Problem Set! Designed for Harvard University's CS50, taught by Professor David Malan, this problem set introduces students to fundamental cybersecurity concepts through hands-on exercises and conceptual questions.
